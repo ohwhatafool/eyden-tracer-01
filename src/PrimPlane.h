@@ -16,22 +16,30 @@ public:
 	 * @param normal Normal to the plane
 	 */
 	CPrimPlane(Vec3f origin, Vec3f normal)
-		: CPrim()
-		, m_normal(normal)
-		, m_origin(origin)
+		: CPrim(), m_normal(normal), m_origin(origin)
 	{
 		normalize(m_normal);
 	}
 	virtual ~CPrimPlane(void) = default;
 
-	virtual bool Intersect(Ray& ray) override
+	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
-		return true;
+		float denom = m_normal.dot(ray.dir);
+		if (denom > 1e-6)
+		{
+			Vec3f po = m_origin - ray.org;
+			float num = po.dot(m_normal);
+			ray.t = num / denom;
+
+			//check if it is in range;
+			return (ray.t >= 0);
+		}
+
+		return false;
 	}
-	
-	
+
 private:
-	Vec3f m_normal;	///< Point on the plane
-	Vec3f m_origin;	///< Normal to the plane
+	Vec3f m_normal; ///< Point on the plane
+	Vec3f m_origin; ///< Normal to the plane
 };

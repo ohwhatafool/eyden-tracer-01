@@ -23,15 +23,23 @@ Mat RenderFrame(ICamera &camera)
 		{
 
 			// Initialize your ray here
+			camera.InitRay(x, y, ray);
 
 			// Your code
 
 			Vec3f col = RGB(0, 0, 0); // background color
+			Vec3f col2 = RGB(0, 50, 9);
 
 			/*
 			 * Find closest intersection with scene
 			 * objetcs and calculate color
 			 */
+
+			s2.Intersect(ray);
+			s3.Intersect(ray);
+			p1.Intersect(ray);
+			t1.Intersect(ray);
+			t2.Intersect(ray);
 
 			// Your code
 
@@ -46,8 +54,6 @@ int main(int argc, char *argv[])
 {
 	const Size resolution(800, 600);
 	// render three images with different camera settings
-
-	//printf("main working?\n");
 
 	CCameraPerspective c1(Vec3f(0, 0, 10), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 60, resolution);
 	Mat img1 = RenderFrame(c1);

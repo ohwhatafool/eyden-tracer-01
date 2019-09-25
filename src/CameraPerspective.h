@@ -19,21 +19,31 @@ public:
 	 * @param resolution The image resolution
 	 */
 	CCameraPerspective(Vec3f pos, Vec3f dir, Vec3f up, float angle, Size resolution)
-		: ICamera(resolution)
-		, m_pos(pos)
-		, m_dir(dir)
-		, m_up(up)
+		: ICamera(resolution), m_pos(pos), m_dir(dir), m_up(up)
 	{
-		// --- PUT YOUR CODE HERE ---
+		m_zAxis = normalize(dir);
+		m_xAxis = normalize(up * m_zAxis);
+		m_yAxis = normalize(m_xAxis * m_zAxis);
+		m_aspect = resolution.width / float(resolution.height);
+
+		// opening angle:
+		float angleInRad = angle * (float)M_PI / 180.f;
+		m_focus = 1.f / tan(angleInRad / 2.f);
+
+		//printf("Width is %d ", resolution.width); // --- PUT YOUR CODE HERE ---
 	}
 	virtual ~CCameraPerspective(void) = default;
 
-	virtual bool InitRay(float x, float y, Ray& ray) override
+	virtual bool InitRay(float x, float y, Ray &ray) override
 	{
-		// --- PUT YOUR CODE HERE ---
-		return true;
-	}
+		ray.org = m_pos;
+		ray.dir = (m_xAxis * (2.0f * ((x / (float)getResolution().width - .5f) * m_aspect))) + (m_yAxis * (2.0f * (y / (float)getResolution().height - .5f))) + (m_zAxis * m_focus);
+		ray.dir = normalize(ray.dir);
 
+		return true;
+
+		// --- PUT YOUR CODE HERE ---
+	}
 
 private:
 	// input values
@@ -48,4 +58,3 @@ private:
 	Vec3f m_zAxis;
 	float m_aspect;
 };
-
