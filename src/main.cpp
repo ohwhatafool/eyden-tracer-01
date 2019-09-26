@@ -38,6 +38,7 @@ Mat RenderFrame(ICamera &camera)
 			 * objetcs and calculate color
 			 */
 
+			//Hit color to objects if intersection is valid
 			if (s1.Intersect(ray))
 				col = RGB(1, 0, 0);
 

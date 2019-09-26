@@ -25,10 +25,13 @@ public:
 	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
+
+		//referenced from the slides
 		float numerator = m_normal.dot(m_origin - ray.org);
 		float denominator = m_normal.dot(ray.dir);
 		float t;
 
+		//invalid solution
 		if (denominator == 0)
 		{
 			return 0;
@@ -38,11 +41,13 @@ public:
 			t = numerator / denominator;
 		}
 
+		//Range Check
+
 		if (t < Epsilon || t > ray.t)
 		{
 			return false;
 		}
-
+		//Finalise ray.t
 		ray.t = t;
 
 		return true;

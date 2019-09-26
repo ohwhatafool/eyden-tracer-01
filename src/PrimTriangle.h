@@ -25,15 +25,18 @@ public:
 	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
-		Vec3f nab = (m_b - ray.org).cross(m_a - ray.org);
-		Vec3f nbc = (m_c - ray.org).cross(m_b - ray.org);
-		Vec3f nca = (m_a - ray.org).cross(m_c - ray.org);
 
-		float s_area = nab.dot(ray.dir) + nbc.dot(ray.dir) + nca.dot(ray.dir);
-		float lambda1 = nab.dot(ray.dir) / s_area;
-		float lambda2 = nbc.dot(ray.dir) / s_area;
-		float lambda3 = nca.dot(ray.dir) / s_area;
+		//Referenced from the slides:
+		Vec3f nAB = (m_b - ray.org).cross(m_a - ray.org);
+		Vec3f nBC = (m_c - ray.org).cross(m_b - ray.org);
+		Vec3f nCA = (m_a - ray.org).cross(m_c - ray.org);
 
+		float s_area = nAB.dot(ray.dir) + nBC.dot(ray.dir) + nCA.dot(ray.dir);
+		float lambda1 = nAB.dot(ray.dir) / s_area;
+		float lambda2 = nBC.dot(ray.dir) / s_area;
+		float lambda3 = nCA.dot(ray.dir) / s_area;
+
+		//Edges check
 		if (lambda1 < 0 || lambda2 < 0 || lambda3 < 0)
 		{
 			return false;
@@ -42,6 +45,8 @@ public:
 		Vec3f p = lambda1 * m_a + lambda2 * m_b + lambda3 * m_c;
 
 		float t = p[0] / ray.dir[0];
+
+		//range Check
 		if (t < Epsilon || t > ray.t)
 		{
 			return false;

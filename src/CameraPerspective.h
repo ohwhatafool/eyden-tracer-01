@@ -21,9 +21,9 @@ public:
 	CCameraPerspective(Vec3f pos, Vec3f dir, Vec3f up, float angle, Size resolution)
 		: ICamera(resolution), m_pos(pos), m_dir(dir), m_up(up)
 	{
-		//m_zAxis = normalize(dir);
-		//m_xAxis = normalize(up * m_zAxis);
-		//m_yAxis = normalize(m_xAxis * m_zAxis);
+		// --- PUT YOUR CODE HERE ---
+
+		//define axis
 		m_yAxis = -m_up;
 		m_xAxis = m_dir.cross(m_up);
 		m_aspect = resolution.width / float(resolution.height);
@@ -32,21 +32,22 @@ public:
 		float angleInRad = angle * (float)M_PI / 180.f;
 		m_focus = 1.f / tan(angleInRad / 2.f);
 
-		//printf("Width is %d ", resolution.width); // --- PUT YOUR CODE HERE ---
+		//Checking method: printf("Width is %d ", resolution.width);
 	}
 	virtual ~CCameraPerspective(void) = default;
 
 	virtual bool InitRay(float x, float y, Ray &ray) override
 	{
+		// --- PUT YOUR CODE HERE ---
+		//From the slides
 		ray.org = m_pos;
 		ray.dir = (m_xAxis * (2.0f * ((x / (float)getResolution().width - .5f) * m_aspect))) + (m_yAxis * (2.0f * (y / (float)getResolution().height - .5f))) + (m_dir * m_focus);
 		ray.dir = normalize(ray.dir);
 
+		//putting limit
 		ray.t = std::numeric_limits<float>::max();
 
 		return true;
-
-		// --- PUT YOUR CODE HERE ---
 	}
 
 private:

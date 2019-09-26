@@ -24,26 +24,35 @@ public:
 	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
+
+		//Methods referenced from slides and scratchapixel.com
+
 		float a = ray.dir.dot(ray.dir);
 		float b = 2 * ray.dir.dot(ray.org - m_center);
 		float c = (ray.org - m_center).dot(ray.org - m_center) - m_radius * m_radius;
 
-		float test = b * b - (4 * a * c);
-		if (test < 0)
+		float test_val = b * b - (4 * a * c);
+
+		//Solution doesn't exist
+		if (test_val < 0)
 		{
 			return false;
 		}
 
-		float t1 = ((-b) + sqrt(test)) / (a * 2);
+		//t has 2 solutions according to quadratic formula
+		float t1 = ((-b) + sqrt(test_val)) / (a * 2);
 
-		float t2 = ((-b) - sqrt(test)) / (a * 2);
+		float t2 = ((-b) - sqrt(test_val)) / (a * 2);
 
 		float t;
+
+		//we take the smallest t as our final value of t
 		if (t1 < t2)
 			t = t1;
 		else
 			t = t2;
 
+		//Range Check -validity check
 		if ((t > Epsilon) && (t < ray.t))
 		{
 			ray.t = t;

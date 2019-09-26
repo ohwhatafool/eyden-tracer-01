@@ -29,6 +29,7 @@ public:
 	 */
 	virtual bool Intersect(Ray &ray) = 0;
 
+	//Extra Method to test m_color
 	Vec3f getcolor()
 	{
 		return m_color;
