@@ -28,7 +28,6 @@ Mat RenderFrame(ICamera &camera)
 			// Your code
 
 			Vec3f col = RGB(1, 1, 0); // background color
-			Vec3f col2 = RGB(0, 50, 9);
 
 			/*
 			 * Find closest intersection with scene
