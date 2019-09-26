@@ -25,18 +25,27 @@ public:
 	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
-		float denom = m_normal.dot(ray.dir);
-		if (denom > 1e-6)
-		{
-			Vec3f po = m_origin - ray.org;
-			float num = po.dot(m_normal);
-			ray.t = num / denom;
+		float numerator = m_normal.dot(m_origin - ray.org);
+		float denominator = m_normal.dot(ray.dir);
+		float t;
 
-			//check if it is in range;
-			return (ray.t >= 0);
+		if (denominator == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			t = numerator / denominator;
 		}
 
-		return false;
+		if (t < Epsilon || t > ray.t)
+		{
+			return false;
+		}
+
+		ray.t = t;
+
+		return true;
 	}
 
 private:

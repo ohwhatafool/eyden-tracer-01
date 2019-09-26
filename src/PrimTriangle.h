@@ -25,51 +25,31 @@ public:
 	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
-		Vec3f v0v1 = m_b - m_a;
-		Vec3f v0v2 = m_c - m_a;
+		Vec3f nab = (m_b - ray.org).cross(m_a - ray.org);
+		Vec3f nbc = (m_c - ray.org).cross(m_b - ray.org);
+		Vec3f nca = (m_a - ray.org).cross(m_c - ray.org);
 
-		Vec3f N = v0v1.cross(v0v2);
+		float s_area = nab.dot(ray.dir) + nbc.dot(ray.dir) + nca.dot(ray.dir);
+		float lambda1 = nab.dot(ray.dir) / s_area;
+		float lambda2 = nbc.dot(ray.dir) / s_area;
+		float lambda3 = nca.dot(ray.dir) / s_area;
 
-		float NdotRayDirection = N.dot(ray.dir);
+		if (lambda1 < 0 || lambda2 < 0 || lambda3 < 0)
+		{
+			return false;
+		}
 
-		if (fabs(NdotRayDirection) < Epsilon) // almost 0
-			return false;					  // they are parallel so they don't intersect !
+		Vec3f p = lambda1 * m_a + lambda2 * m_b + lambda3 * m_c;
 
-		// compute d parameter using equation 2
-		float d = N.dot(m_a);
+		float t = p[0] / ray.dir[0];
+		if (t < Epsilon || t > ray.t)
+		{
+			return false;
+		}
 
-		//compute t (eqn 3)
-		ray.t = (N.dot(ray.org) + d) / NdotRayDirection;
-		if (ray.t < 0)
-			return false; // the triangle is behind
+		ray.t = t;
 
-		// compute the intersection point using equation 1
-		Vec3f P = ray.org + ray.t * ray.dir;
-		// Step 2: inside-outside test
-		Vec3f C; // vector perpendicular to triangle's plane
-
-		// edge 0
-		Vec3f edge0 = m_b - m_a;
-		Vec3f vp0 = P - m_b;
-		C = edge0.cross(vp0);
-		if (N.dot(C) < 0)
-			return false; // P is on the right side
-
-		// edge 1
-		Vec3f edge1 = m_c - m_b;
-		Vec3f vp1 = P - m_b;
-		C = edge1.cross(vp1);
-		if (N.dot(C) < 0)
-			return false; // P is on the right side
-
-		// edge 2
-		Vec3f edge2 = m_a - m_c;
-		Vec3f vp2 = P - m_c;
-		C = edge2.cross(vp2);
-		if (N.dot(C) < 0)
-			return false; // P is on the right side;
-
-		return true; // this ray hits the triangle
+		return true;
 	}
 
 private:

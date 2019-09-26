@@ -24,27 +24,33 @@ public:
 	virtual bool Intersect(Ray &ray) override
 	{
 		// --- PUT YOUR CODE HERE ---
-		float a, b, c;
-		float t1, t2;
-		// ray.dir = normalize(ray.dir);
-		a = ray.dir.dot(ray.dir);
-		b = 2 * ray.dir.dot(ray.org - m_center);
-		c = ((ray.org - m_center).dot(ray.org - m_center)) - (m_radius * m_radius);
-		if ((b * b) - (4 * a * c) < 0)
+		float a = ray.dir.dot(ray.dir);
+		float b = 2 * ray.dir.dot(ray.org - m_center);
+		float c = (ray.org - m_center).dot(ray.org - m_center) - m_radius * m_radius;
+
+		float test = b * b - (4 * a * c);
+		if (test < 0)
 		{
 			return false;
 		}
 
-		else if ((b * b) - (4 * a * c) == 0)
+		float t1 = ((-b) + sqrt(test)) / (a * 2);
+
+		float t2 = ((-b) - sqrt(test)) / (a * 2);
+
+		float t;
+		if (t1 < t2)
+			t = t1;
+		else
+			t = t2;
+
+		if ((t > Epsilon) && (t < ray.t))
 		{
-			ray.t = (-1 * b) / (2 * a);
+			ray.t = t;
+			return true;
 		}
 		else
-		{
-			t1 = ((-1 * b) + sqrt((b * b) - (4 * a * c)) / (2 * a));
-			t2 = ((-1 * b) - sqrt((b * b) - (4 * a * c)) / (2 * a));
-		}
-		return true;
+			return false;
 	}
 
 private:

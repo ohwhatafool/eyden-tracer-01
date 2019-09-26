@@ -21,9 +21,11 @@ public:
 	CCameraPerspective(Vec3f pos, Vec3f dir, Vec3f up, float angle, Size resolution)
 		: ICamera(resolution), m_pos(pos), m_dir(dir), m_up(up)
 	{
-		m_zAxis = normalize(dir);
-		m_xAxis = normalize(up * m_zAxis);
-		m_yAxis = normalize(m_xAxis * m_zAxis);
+		//m_zAxis = normalize(dir);
+		//m_xAxis = normalize(up * m_zAxis);
+		//m_yAxis = normalize(m_xAxis * m_zAxis);
+		m_yAxis = -m_up;
+		m_xAxis = m_dir.cross(m_up);
 		m_aspect = resolution.width / float(resolution.height);
 
 		// opening angle:
@@ -37,8 +39,12 @@ public:
 	virtual bool InitRay(float x, float y, Ray &ray) override
 	{
 		ray.org = m_pos;
-		ray.dir = (m_xAxis * (2.0f * ((x / (float)getResolution().width - .5f) * m_aspect))) + (m_yAxis * (2.0f * (y / (float)getResolution().height - .5f))) + (m_zAxis * m_focus);
+		ray.dir = (m_xAxis * (2.0f * ((x / (float)getResolution().width - .5f) * m_aspect))) + (m_yAxis * (2.0f * (y / (float)getResolution().height - .5f))) + (m_dir * m_focus);
 		ray.dir = normalize(ray.dir);
+
+		ray.t = std::numeric_limits<float>::max();
+
+		return true;
 
 		// --- PUT YOUR CODE HERE ---
 	}
