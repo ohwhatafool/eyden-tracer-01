@@ -40,8 +40,6 @@ public:
 		ray.dir = (m_xAxis * (2.0f * ((x / (float)getResolution().width - .5f) * m_aspect))) + (m_yAxis * (2.0f * (y / (float)getResolution().height - .5f))) + (m_zAxis * m_focus);
 		ray.dir = normalize(ray.dir);
 
-		return true;
-
 		// --- PUT YOUR CODE HERE ---
 	}
 

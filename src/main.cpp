@@ -35,11 +35,15 @@ Mat RenderFrame(ICamera &camera)
 			 * objetcs and calculate color
 			 */
 
-			s2.Intersect(ray);
+			if (s2.Intersect(ray))
+			{
+						}
+
+			/*
 			s3.Intersect(ray);
 			p1.Intersect(ray);
 			t1.Intersect(ray);
-			t2.Intersect(ray);
+			t2.Intersect(ray); */
 
 			// Your code
 
