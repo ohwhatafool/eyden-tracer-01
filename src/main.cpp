@@ -27,7 +27,7 @@ Mat RenderFrame(ICamera &camera)
 
 			// Your code
 
-			Vec3f col = RGB(0, 0, 0); // background color
+			Vec3f col = RGB(1, 1, 0); // background color
 			Vec3f col2 = RGB(0, 50, 9);
 
 			/*
@@ -35,15 +35,22 @@ Mat RenderFrame(ICamera &camera)
 			 * objetcs and calculate color
 			 */
 
-			if (s2.Intersect(ray))
-			{
-						}
+			if (s1.Intersect(ray))
+				col = RGB(1, 0, 0);
 
-			/*
-			s3.Intersect(ray);
-			p1.Intersect(ray);
-			t1.Intersect(ray);
-			t2.Intersect(ray); */
+			if (s2.Intersect(ray))
+				col = RGB(0, 1, 0);
+
+			if (s3.Intersect(ray))
+				col = RGB(0, 0, 1);
+
+			if (p1.Intersect(ray))
+				col = RGB(1, 1, 0);
+
+			if (t1.Intersect(ray))
+				col = RGB(0, 1, 1);
+			if (t2.Intersect(ray))
+				col = RGB(1, 1, 1);
 
 			// Your code
 
